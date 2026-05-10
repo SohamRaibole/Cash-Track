@@ -1,0 +1,194 @@
+Smart ATM Database & Transaction Management System
+Overview
+You are required to design and develop an ATM Backend & Database System using:
+Java 25 (advanced features mandatory)
+Spring Boot + gRPC (RPC-based communication)
+Gradle (mandatory build tool)
+OAuth 2.0 Authentication (Spring Security)
+MySQL (Relational Database)
+The system simulates a real-world banking ATM network platform handling:
+Account management
+Cash withdrawal & deposit
+Balance inquiry
+Fund transfers
+ATM machine monitoring
+Transaction processing & reconciliation
+Fraud detection & compliance
+Architecture Requirements
+Gradle multi-module architecture
+MySQL with strong ACID guarantees
+High concurrency transaction handling
+Distributed ATM network support
+Idempotent financial operations
+Security
+OAuth 2.0 with JWT
+Roles:
+CUSTOMER
+ATM_MACHINE
+BANK_ADMIN
+AUDITOR
+Java 25 Features
+Records → DTOs
+Sealed Classes → Transaction states
+Pattern Matching (switch/instanceof)
+Virtual Threads → concurrent transactions
+Structured Concurrency → multi-step financial operations
+String Templates (preview)
+Advanced Streams
+Functional Requirements (Action-Based Modules + gRPC)
+All APIs must be exposed via gRPC services (Protobuf contracts)
+Modules are defined using action-oriented capabilities (verbs)
+Module 1: Create & Manage Bank AccountsRPC Methods:
+createAccount
+updateAccountDetails
+deactivateAccount
+linkATMCard
+blockCard
+getAccountById
+getAccountSummary
+Business Rules:
+Unique account number
+KYC mandatory
+Account status lifecycle
+Multi-account per customer supported
+Module 2: Authenticate & Validate ATM SessionsRPC Methods:
+initiateSession
+validatePIN
+authenticateCard
+refreshSession
+terminateSession
+Business Rules:
+PIN retry limits
+Session timeout
+Secure card authentication
+Module 3: Process Cash WithdrawalsRPC Methods:
+initiateWithdrawal
+validateWithdrawal
+dispenseCash
+confirmWithdrawal
+reverseWithdrawal
+Transaction State Flow (Sealed Classes):
+INITIATED → AUTHORIZED → PROCESSING → COMPLETED → FAILED → REVERSED
+Business Rules:
+Daily withdrawal limits
+ATM cash availability check
+Denomination validation
+Idempotent withdrawal requests
+Module 4: Handle Cash DepositsRPC Methods:
+initiateDeposit
+acceptCash
+validateDeposit
+confirmDeposit
+reconcileDeposit
+Business Rules:
+Envelope/cash validation
+Deposit limits
+Real-time vs deferred posting
+Module 5: Transfer Funds Between AccountsRPC Methods:
+initiateTransfer
+validateTransfer
+executeTransfer
+confirmTransfer
+rollbackTransfer
+Business Rules:
+Sufficient balance check
+Cross-bank transfer handling
+Atomic transaction guarantee
+Module 6: Retrieve Balances & StatementsRPC Methods:
+getBalance
+getMiniStatement
+getDetailedStatement
+getTransactionHistory
+Business Rules:
+Real-time balance accuracy
+Statement pagination
+Transaction filtering
+Module 7: Monitor & Manage ATM MachinesRPC Methods:
+registerATM
+updateATMStatus
+loadCash
+getATMCashStatus
+reportATMFailure
+Business Rules:
+Cash level thresholds
+ATM health monitoring
+Geo-location tracking
+Module 8: Reconcile Transactions & SettlementsRPC Methods:
+reconcileTransactions
+detectMismatch
+resolveMismatch
+generateSettlementReport
+Business Rules:
+End-of-day reconciliation
+Cross-system consistency
+Discrepancy resolution
+Module 9: Detect Fraud & Suspicious ActivitiesRPC Methods:
+detectFraudulentTransaction
+analyzeTransactionPatterns
+flagSuspiciousActivity
+getFraudReports
+Business Rules:
+Rapid withdrawals → flag
+Location anomalies
+Duplicate transactions
+Module 10: Send Alerts & NotificationsRPC Methods:
+sendTransactionAlert
+sendLowBalanceAlert
+sendFraudAlert
+getNotifications
+Business Rules:
+Real-time alerts
+Multi-channel delivery
+Module 11: Authenticate & Authorize UsersRPC Methods:
+login
+validateToken
+refreshToken
+logout
+Business Rules:
+OAuth token validation
+Role-based RPC access
+Module 12: Analyze Banking Metrics & ReportsRPC Methods:
+getTransactionAnalytics
+getATMUsageStats
+getRevenueReport
+getCustomerInsights
+Business Rules:
+Aggregation queries (MySQL)
+Time-based analytics
+Role-based dashboards
+Module 13: Predict Cash Demand & Optimize ATM LoadsRPC Methods:
+forecastCashDemand
+recommendCashLoading
+optimizeATMDistribution
+Business Rules:
+Historical usage patterns
+Demand forecasting
+Cash optimization
+gRPC Contract Example (Proto)
+service TransactionService {
+ rpc InitiateWithdrawal (WithdrawalRequest) returns (TransactionResponse);
+ rpc GetBalance (AccountRequest) returns (BalanceResponse);
+}
+
+message WithdrawalRequest {
+ string accountId = 1;
+ double amount = 2;
+}
+
+message TransactionResponse {
+ string transactionId = 1;
+ string status = 2;
+}
+Bonus (Advanced Expectations)
+Distributed transaction management (2PC/Saga)
+Strong consistency & locking strategies
+Encryption for sensitive data
+MySQL partitioning & indexing
+Mandatory Testing Requirement
+JUnit 5 + Mockito
+gRPC testing
+Cover:
+Transaction consistency
+Fraud detection
+Concurrency scenarios
+Reconciliation logic

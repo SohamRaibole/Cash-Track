@@ -1,0 +1,18 @@
+rootProject.name = 'cashTrack'
+
+include 'cashtrack-api-module'
+include 'cashtrack-account-module'
+include 'cashtrack-session-module'
+include 'cashtrack-withdrawl-module'
+include 'cashtrack-deposit-module'
+include 'cashtrack-transfer-module'
+include 'app'
+
+include 'cashtrack-balance-module'
+include 'cashtrack-fraud-module'
+include 'cashtrack-auth-module'
+include 'cashtrack-notification-module'
+include 'cashtrack-forecast-module'
+include 'cashtrack-reconciliation-module'
+include 'cashtrack-machine-module'
+include 'cashtrack-analytics-module'

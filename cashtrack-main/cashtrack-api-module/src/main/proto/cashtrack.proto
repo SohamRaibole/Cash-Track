@@ -1,0 +1,393 @@
+syntax = "proto3";
+
+package com.cashtrack.api;
+
+option java_multiple_files = true;
+option java_package = "com.cashtrack.api";
+
+// --- Module 1: Account ---
+service AccountService {
+  rpc CreateAccount (CreateAccountRequest) returns (AccountResponse);
+  rpc UpdateAccountDetails (UpdateAccountRequest) returns (AccountResponse);
+  rpc DeactivateAccount (AccountIdRequest) returns (AccountResponse);
+  rpc LinkATMCard (LinkCardRequest) returns (AccountResponse);
+  rpc BlockCard (CardIdRequest) returns (AccountResponse);
+  rpc GetAccountById (AccountIdRequest) returns (AccountResponse);
+  rpc GetAccountSummary (AccountIdRequest) returns (AccountSummaryResponse);
+}
+
+message CreateAccountRequest {
+  string customerName = 1;
+  string kycDetails = 2;
+  double initialDeposit = 3;
+}
+
+message UpdateAccountRequest {
+  string accountId = 1;
+  string customerName = 2;
+  string kycDetails = 3;
+}
+
+message AccountIdRequest {
+  string accountId = 1;
+}
+
+message LinkCardRequest {
+  string accountId = 1;
+  string cardNumber = 2;
+}
+
+message CardIdRequest {
+  string cardNumber = 1;
+}
+
+message AccountResponse {
+  string accountId = 1;
+  string status = 2;
+  string message = 3;
+}
+
+message AccountSummaryResponse {
+  string accountId = 1;
+  double balance = 2;
+  string status = 3;
+}
+
+// --- Module 2: Session ---
+service SessionService {
+  rpc InitiateSession (InitiateSessionRequest) returns (SessionResponse);
+  rpc ValidatePIN (ValidatePINRequest) returns (SessionResponse);
+  rpc AuthenticateCard (AuthCardRequest) returns (SessionResponse);
+  rpc RefreshSession (SessionIdRequest) returns (SessionResponse);
+  rpc TerminateSession (SessionIdRequest) returns (SessionResponse);
+}
+
+message InitiateSessionRequest {
+  string atmId = 1;
+  string cardNumber = 2;
+}
+
+message ValidatePINRequest {
+  string sessionId = 1;
+  string pin = 2;
+}
+
+message AuthCardRequest {
+  string cardNumber = 1;
+}
+
+message SessionIdRequest {
+  string sessionId = 1;
+}
+
+message SessionResponse {
+  string sessionId = 1;
+  string status = 2;
+  string token = 3;
+}
+
+// --- Module 3: Withdrawal ---
+service WithdrawalService {
+  rpc InitiateWithdrawal (WithdrawalRequest) returns (TransactionResponse);
+  rpc ValidateWithdrawal (TransactionIdRequest) returns (TransactionResponse);
+  rpc DispenseCash (TransactionIdRequest) returns (TransactionResponse);
+  rpc ConfirmWithdrawal (TransactionIdRequest) returns (TransactionResponse);
+  rpc ReverseWithdrawal (TransactionIdRequest) returns (TransactionResponse);
+}
+
+message WithdrawalRequest {
+  string accountId = 1;
+  string atmId = 2;
+  double amount = 3;
+}
+
+// --- Module 4: Deposit ---
+service DepositService {
+  rpc InitiateDeposit (DepositRequest) returns (TransactionResponse);
+  rpc AcceptCash (TransactionIdRequest) returns (TransactionResponse);
+  rpc ValidateDeposit (TransactionIdRequest) returns (TransactionResponse);
+  rpc ConfirmDeposit (TransactionIdRequest) returns (TransactionResponse);
+  rpc ReconcileDeposit (TransactionIdRequest) returns (TransactionResponse);
+}
+
+message DepositRequest {
+  string accountId = 1;
+  string atmId = 2;
+  double amount = 3;
+}
+
+// --- Module 5: Transfer ---
+service TransferService {
+  rpc InitiateTransfer (TransferRequest) returns (TransactionResponse);
+  rpc ValidateTransfer (TransactionIdRequest) returns (TransactionResponse);
+  rpc ExecuteTransfer (TransactionIdRequest) returns (TransactionResponse);
+  rpc ConfirmTransfer (TransactionIdRequest) returns (TransactionResponse);
+  rpc RollbackTransfer (TransactionIdRequest) returns (TransactionResponse);
+}
+
+message TransferRequest {
+  string sourceAccountId = 1;
+  string targetAccountId = 2;
+  double amount = 3;
+}
+
+message TransactionIdRequest {
+  string transactionId = 1;
+}
+
+message TransactionResponse {
+  string transactionId = 1;
+  string status = 2;
+  string message = 3;
+}
+
+// --- Module 6: Balance ---
+service BalanceService {
+  rpc GetBalance (BalanceRequest) returns (BalanceResponse);
+  rpc GetMiniStatement (StatementRequest) returns (StatementResponse);
+  rpc GetDetailedStatement (StatementRequest) returns (StatementResponse);
+  rpc GetTransactionHistory (HistoryRequest) returns (HistoryResponse);
+}
+
+message BalanceRequest {
+  string accountId = 1;
+}
+
+message BalanceResponse {
+  string accountId = 1;
+  double balance = 2;
+}
+
+message StatementRequest {
+  string accountId = 1;
+}
+
+message StatementResponse {
+  string accountId = 1;
+  string statementDetails = 2;
+}
+
+message HistoryRequest {
+  string accountId = 1;
+}
+
+message HistoryResponse {
+  string accountId = 1;
+  string historyDetails = 2;
+}
+
+// --- Module 7: Machine ---
+service MachineService {
+  rpc RegisterATM (RegisterATMRequest) returns (ATMResponse);
+  rpc UpdateATMStatus (ATMStatusRequest) returns (ATMResponse);
+  rpc LoadCash (LoadCashRequest) returns (ATMResponse);
+  rpc GetATMCashStatus (ATMIdRequest) returns (ATMCashResponse);
+  rpc ReportATMFailure (ATMFailureRequest) returns (ATMResponse);
+}
+
+message RegisterATMRequest {
+  string location = 1;
+}
+
+message ATMStatusRequest {
+  string atmId = 1;
+  string status = 2;
+}
+
+message LoadCashRequest {
+  string atmId = 1;
+  double amount = 2;
+}
+
+message ATMIdRequest {
+  string atmId = 1;
+}
+
+message ATMFailureRequest {
+  string atmId = 1;
+  string errorDetails = 2;
+}
+
+message ATMResponse {
+  string atmId = 1;
+  string status = 2;
+}
+
+message ATMCashResponse {
+  string atmId = 1;
+  double cashAvailable = 2;
+}
+
+// --- Module 8: Reconciliation ---
+service ReconciliationService {
+  rpc ReconcileTransactions (ReconcileRequest) returns (ReconcileResponse);
+  rpc DetectMismatch (MismatchRequest) returns (MismatchResponse);
+  rpc ResolveMismatch (ResolveMismatchRequest) returns (ReconcileResponse);
+  rpc GenerateSettlementReport (SettlementRequest) returns (SettlementResponse);
+}
+
+message ReconcileRequest {
+  string date = 1;
+}
+
+message ReconcileResponse {
+  string status = 1;
+}
+
+message MismatchRequest {
+  string date = 1;
+}
+
+message MismatchResponse {
+  string status = 1;
+  string mismatchDetails = 2;
+}
+
+message ResolveMismatchRequest {
+  string mismatchId = 1;
+  string resolution = 2;
+}
+
+message SettlementRequest {
+  string date = 1;
+}
+
+message SettlementResponse {
+  string reportDetails = 1;
+}
+
+// --- Module 9: Fraud ---
+service FraudService {
+  rpc DetectFraudulentTransaction (FraudTransactionIdRequest) returns (FraudResponse);
+  rpc AnalyzeTransactionPatterns (FraudAccountIdRequest) returns (FraudResponse);
+  rpc FlagSuspiciousActivity (SuspiciousActivityRequest) returns (FraudResponse);
+  rpc GetFraudReports (FraudReportRequest) returns (FraudReportResponse);
+}
+
+message FraudTransactionIdRequest {
+  string transactionId = 1;
+}
+
+message FraudAccountIdRequest {
+  string accountId = 1;
+}
+
+message SuspiciousActivityRequest {
+  string accountId = 1;
+  string activityDetails = 2;
+}
+
+message FraudReportRequest {
+  string date = 1;
+}
+
+message FraudResponse {
+  string status = 1;
+}
+
+message FraudReportResponse {
+  string reportDetails = 1;
+}
+
+// --- Module 10: Notification ---
+service NotificationService {
+  rpc SendTransactionAlert (TransactionAlertRequest) returns (NotificationResponse);
+  rpc SendLowBalanceAlert (NotificationAccountIdRequest) returns (NotificationResponse);
+  rpc SendFraudAlert (FraudAlertRequest) returns (NotificationResponse);
+  rpc GetNotifications (NotificationAccountIdRequest) returns (NotificationListResponse);
+}
+
+message TransactionAlertRequest {
+  string accountId = 1;
+  string transactionDetails = 2;
+}
+
+message NotificationAccountIdRequest {
+  string accountId = 1;
+}
+
+message FraudAlertRequest {
+  string accountId = 1;
+  string fraudDetails = 2;
+}
+
+message NotificationResponse {
+  string status = 1;
+}
+
+message NotificationListResponse {
+  string notifications = 1;
+}
+
+// --- Module 11: Auth ---
+service AuthService {
+  rpc Login (LoginRequest) returns (AuthResponse);
+  rpc ValidateToken (TokenRequest) returns (AuthResponse);
+  rpc RefreshToken (TokenRequest) returns (AuthResponse);
+  rpc Logout (TokenRequest) returns (AuthResponse);
+}
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message TokenRequest {
+  string token = 1;
+}
+
+message AuthResponse {
+  string token = 1;
+  string status = 2;
+}
+
+// --- Module 12: Analytics ---
+service AnalyticsService {
+  rpc GetTransactionAnalytics (AnalyticsRequest) returns (AnalyticsResponse);
+  rpc GetATMUsageStats (AnalyticsATMIdRequest) returns (AnalyticsResponse);
+  rpc GetRevenueReport (RevenueRequest) returns (AnalyticsResponse);
+  rpc GetCustomerInsights (AnalyticsAccountIdRequest) returns (AnalyticsResponse);
+}
+
+message AnalyticsRequest {
+  string dateRange = 1;
+}
+
+message AnalyticsATMIdRequest {
+  string atmId = 1;
+}
+
+message RevenueRequest {
+  string dateRange = 1;
+}
+
+message AnalyticsAccountIdRequest {
+  string accountId = 1;
+}
+
+message AnalyticsResponse {
+  string data = 1;
+}
+
+// --- Module 13: Forecast ---
+service ForecastService {
+  rpc ForecastCashDemand (ForecastRequest) returns (ForecastResponse);
+  rpc RecommendCashLoading (RecommendCashRequest) returns (ForecastResponse);
+  rpc OptimizeATMDistribution (OptimizeDistributionRequest) returns (ForecastResponse);
+}
+
+message ForecastRequest {
+  string atmId = 1;
+}
+
+message RecommendCashRequest {
+  string atmId = 1;
+}
+
+message OptimizeDistributionRequest {
+  string region = 1;
+}
+
+message ForecastResponse {
+  string forecastData = 1;
+}

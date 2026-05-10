@@ -1,0 +1,557 @@
+# Dummy Data for CashTrack gRPC Endpoints
+# Generated for all endpoints in cashtrack-api-module/src/main/proto/cashtrack.proto
+# All data is fictional for testing purposes
+
+---
+
+## 1. AccountService Endpoints
+
+### CreateAccount (RPC)
+**Request (CreateAccountRequest):**
+- customerName: "Alice Johnson"
+- kycDetails: "PASSPORT:AB1234567, DOB:1985-03-22, ADDRESS:456 Oak Ave, New York"
+- initialDeposit: 5000.00
+
+**Response (AccountResponse):**
+- accountId: "ACC-2026-001"
+- status: "ACTIVE"
+- message: "Account created successfully"
+
+### UpdateAccountDetails (RPC)
+**Request (UpdateAccountRequest):**
+- accountId: "ACC-2026-001"
+- customerName: "Alice M. Johnson"
+- kycDetails: "PASSPORT:AB1234567, DOB:1985-03-22, ADDRESS:789 Pine Rd, New York, PHONE:+1-555-0123"
+
+**Response (AccountResponse):**
+- accountId: "ACC-2026-001"
+- status: "ACTIVE"
+- message: "Account details updated successfully"
+
+### DeactivateAccount (RPC)
+**Request (AccountIdRequest):**
+- accountId: "ACC-2026-001"
+
+**Response (AccountResponse):**
+- accountId: "ACC-2026-001"
+- status: "DEACTIVATED"
+- message: "Account deactivated as requested"
+
+### LinkATMCard (RPC)
+**Request (LinkCardRequest):**
+- accountId: "ACC-2026-001"
+- cardNumber: "4532015112830366"
+
+**Response (AccountResponse):**
+- accountId: "ACC-2026-001"
+- status: "ACTIVE"
+- message: "ATM card linked successfully"
+
+### BlockCard (RPC)
+**Request (CardIdRequest):**
+- cardNumber: "4532015112830366"
+
+**Response (AccountResponse):**
+- accountId: "ACC-2026-001"
+- status: "CARD_BLOCKED"
+- message: "ATM card blocked due to 3 failed PIN attempts"
+
+### GetAccountById (RPC)
+**Request (AccountIdRequest):**
+- accountId: "ACC-2026-001"
+
+**Response (AccountResponse):**
+- accountId: "ACC-2026-001"
+- status: "ACTIVE"
+- message: "Account retrieved successfully"
+
+### GetAccountSummary (RPC)
+**Request (AccountIdRequest):**
+- accountId: "ACC-2026-001"
+
+**Response (AccountSummaryResponse):**
+- accountId: "ACC-2026-001"
+- balance: 12500.50
+- status: "ACTIVE"
+
+---
+
+## 2. SessionService Endpoints
+
+### InitiateSession (RPC)
+**Request (InitiateSessionRequest):**
+- atmId: "ATM-001"
+- cardNumber: "4532015112830366"
+
+**Response (SessionResponse):**
+- sessionId: "SESS-2026-001"
+- status: "INITIATED"
+- token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTRVNTLTIwMjYtMDAxIn0.xxxxx"
+
+### ValidatePIN (RPC)
+**Request (ValidatePINRequest):**
+- sessionId: "SESS-2026-001"
+- pin: "1234"
+
+**Response (SessionResponse):**
+- sessionId: "SESS-2026-001"
+- status: "AUTHENTICATED"
+- token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTRVNTLTIwMjYtMDAxIn0.yyyyy"
+
+### AuthenticateCard (RPC)
+**Request (AuthCardRequest):**
+- cardNumber: "4532015112830366"
+
+**Response (SessionResponse):**
+- sessionId: "SESS-2026-002"
+- status: "CARD_VALID"
+- token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTRVNTLTIwMjYtMDAyIn0.zzzzz"
+
+### RefreshSession (RPC)
+**Request (SessionIdRequest):**
+- sessionId: "SESS-2026-001"
+
+**Response (SessionResponse):**
+- sessionId: "SESS-2026-001"
+- status: "REFRESHED"
+- token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTRVNTLTIwMjYtMDAxIn0.aaaaa"
+
+### TerminateSession (RPC)
+**Request (SessionIdRequest):**
+- sessionId: "SESS-2026-001"
+
+**Response (SessionResponse):**
+- sessionId: "SESS-2026-001"
+- status: "TERMINATED"
+- token: ""
+
+---
+
+## 3. WithdrawalService Endpoints
+
+### InitiateWithdrawal (RPC)
+**Request (WithdrawalRequest):**
+- accountId: "ACC-2026-001"
+- atmId: "ATM-001"
+- amount: 500.00
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-W-001"
+- status: "INITIATED"
+- message: "Withdrawal request initiated"
+
+### ValidateWithdrawal (RPC)
+**Request (TransactionIdRequest):**
+- transactionId: "TXN-W-001"
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-W-001"
+- status: "AUTHORIZED"
+- message: "Withdrawal validated, sufficient balance"
+
+### DispenseCash (RPC)
+**Request (TransactionIdRequest):**
+- transactionId: "TXN-W-001"
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-W-001"
+- status: "PROCESSING"
+- message: "Cash dispensed: 5x$100 bills"
+
+### ConfirmWithdrawal (RPC)
+**Request (TransactionIdRequest):**
+- transactionId: "TXN-W-001"
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-W-001"
+- status: "COMPLETED"
+- message: "Withdrawal of $500 confirmed"
+
+### ReverseWithdrawal (RPC)
+**Request (TransactionIdRequest):**
+- transactionId: "TXN-W-001"
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-W-001"
+- status: "REVERSED"
+- message: "Withdrawal reversed due to ATM error"
+
+---
+
+## 4. DepositService Endpoints
+
+### InitiateDeposit (RPC)
+**Request (DepositRequest):**
+- accountId: "ACC-2026-001"
+- atmId: "ATM-001"
+- amount: 1000.00
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-D-001"
+- status: "INITIATED"
+- message: "Deposit request initiated"
+
+### AcceptCash (RPC)
+**Request (TransactionIdRequest):**
+- transactionId: "TXN-D-001"
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-D-001"
+- status: "PROCESSING"
+- message: "Cash accepted: 10x$100 bills"
+
+### ValidateDeposit (RPC)
+**Request (TransactionIdRequest):**
+- transactionId: "TXN-D-001"
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-D-001"
+- status: "AUTHORIZED"
+- message: "Deposit validated, funds counted"
+
+### ConfirmDeposit (RPC)
+**Request (TransactionIdRequest):**
+- transactionId: "TXN-D-001"
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-D-001"
+- status: "COMPLETED"
+- message: "Deposit of $1000 confirmed"
+
+### ReconcileDeposit (RPC)
+**Request (TransactionIdRequest):**
+- transactionId: "TXN-D-001"
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-D-001"
+- status: "RECONCILED"
+- message: "Deposit reconciled with bank records"
+
+---
+
+## 5. TransferService Endpoints
+
+### InitiateTransfer (RPC)
+**Request (TransferRequest):**
+- sourceAccountId: "ACC-2026-001"
+- targetAccountId: "ACC-2026-002"
+- amount: 750.00
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-T-001"
+- status: "INITIATED"
+- message: "Transfer initiated to ACC-2026-002"
+
+### ValidateTransfer (RPC)
+**Request (TransactionIdRequest):**
+- transactionId: "TXN-T-001"
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-T-001"
+- status: "AUTHORIZED"
+- message: "Transfer validated, sufficient balance in source"
+
+### ExecuteTransfer (RPC)
+**Request (TransactionIdRequest):**
+- transactionId: "TXN-T-001"
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-T-001"
+- status: "PROCESSING"
+- message: "Funds transferred successfully"
+
+### ConfirmTransfer (RPC)
+**Request (TransactionIdRequest):**
+- transactionId: "TXN-T-001"
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-T-001"
+- status: "COMPLETED"
+- message: "Transfer of $750 confirmed"
+
+### RollbackTransfer (RPC)
+**Request (TransactionIdRequest):**
+- transactionId: "TXN-T-001"
+
+**Response (TransactionResponse):**
+- transactionId: "TXN-T-001"
+- status: "ROLLED_BACK"
+- message: "Transfer rolled back due to target account error"
+
+---
+
+## 6. BalanceService Endpoints
+
+### GetBalance (RPC)
+**Request (BalanceRequest):**
+- accountId: "ACC-2026-001"
+
+**Response (BalanceResponse):**
+- accountId: "ACC-2026-001"
+- balance: 13250.50
+
+### GetMiniStatement (RPC)
+**Request (StatementRequest):**
+- accountId: "ACC-2026-001"
+
+**Response (StatementResponse):**
+- accountId: "ACC-2026-001"
+- statementDetails: "Last 5 transactions: TXN-W-001 ($500), TXN-D-001 ($1000), TXN-T-001 ($750), TXN-W-002 ($200), TXN-D-002 ($300)"
+
+### GetDetailedStatement (RPC)
+**Request (StatementRequest):**
+- accountId: "ACC-2026-001"
+
+**Response (StatementResponse):**
+- accountId: "ACC-2026-001"
+- statementDetails: "Detailed statement for May 2026: Opening balance $5000, Total deposits $1300, Total withdrawals $700, Closing balance $13250.50"
+
+### GetTransactionHistory (RPC)
+**Request (HistoryRequest):**
+- accountId: "ACC-2026-001"
+
+**Response (HistoryResponse):**
+- accountId: "ACC-2026-001"
+- historyDetails: "Full history: 2026-05-01: Deposit $5000 (INIT), 2026-05-03: Withdrawal $500 (COMP), 2026-05-05: Deposit $1000 (COMP), 2026-05-07: Transfer $750 (COMP)"
+
+---
+
+## 7. MachineService Endpoints
+
+### RegisterATM (RPC)
+**Request (RegisterATMRequest):**
+- location: "123 Main St, New York, NY 10001"
+
+**Response (ATMResponse):**
+- atmId: "ATM-001"
+- status: "REGISTERED"
+
+### UpdateATMStatus (RPC)
+**Request (ATMStatusRequest):**
+- atmId: "ATM-001"
+- status: "OPERATIONAL"
+
+**Response (ATMResponse):**
+- atmId: "ATM-001"
+- status: "UPDATED"
+
+### LoadCash (RPC)
+**Request (LoadCashRequest):**
+- atmId: "ATM-001"
+- amount: 50000.00
+
+**Response (ATMResponse):**
+- atmId: "ATM-001"
+- status: "CASH_LOADED"
+
+### GetATMCashStatus (RPC)
+**Request (ATMIdRequest):**
+- atmId: "ATM-001"
+
+**Response (ATMCashResponse):**
+- atmId: "ATM-001"
+- cashAvailable: 47500.00
+
+### ReportATMFailure (RPC)
+**Request (ATMFailureRequest):**
+- atmId: "ATM-001"
+- errorDetails: "Cash dispenser jam detected"
+
+**Response (ATMResponse):**
+- atmId: "ATM-001"
+- status: "OUT_OF_SERVICE"
+
+---
+
+## 8. ReconciliationService Endpoints
+
+### ReconcileTransactions (RPC)
+**Request (ReconcileRequest):**
+- date: "2026-05-07"
+
+**Response (ReconcileResponse):**
+- status: "RECONCILIATION_COMPLETE"
+
+### DetectMismatch (RPC)
+**Request (MismatchRequest):**
+- date: "2026-05-07"
+
+**Response (MismatchResponse):**
+- status: "MISMATCH_DETECTED"
+- mismatchDetails: "TXN-W-003: ATM records $500, Bank records $0"
+
+### ResolveMismatch (RPC)
+**Request (ResolveMismatchRequest):**
+- mismatchId: "MIS-001"
+- resolution: "Manual adjustment: Bank record updated to $500"
+
+**Response (ReconcileResponse):**
+- status: "MISMATCH_RESOLVED"
+
+### GenerateSettlementReport (RPC)
+**Request (SettlementRequest):**
+- date: "2026-05-07"
+
+**Response (SettlementResponse):**
+- reportDetails: "Settlement Report 2026-05-07: Total transactions 45, Total amount $125,000, Discrepancies 1, Resolved 1"
+
+---
+
+## 9. FraudService Endpoints
+
+### DetectFraudulentTransaction (RPC)
+**Request (FraudTransactionIdRequest):**
+- transactionId: "TXN-W-003"
+
+**Response (FraudResponse):**
+- status: "FRAUD_DETECTED"
+
+### AnalyzeTransactionPatterns (RPC)
+**Request (FraudAccountIdRequest):**
+- accountId: "ACC-2026-003"
+
+**Response (FraudResponse):**
+- status: "SUSPICIOUS_PATTERN"
+
+### FlagSuspiciousActivity (RPC)
+**Request (SuspiciousActivityRequest):**
+- accountId: "ACC-2026-003"
+- activityDetails: "5 withdrawals of $1000 within 10 minutes from different ATMs"
+
+**Response (FraudResponse):**
+- status: "ACTIVITY_FLAGGED"
+
+### GetFraudReports (RPC)
+**Request (FraudReportRequest):**
+- date: "2026-05-07"
+
+**Response (FraudReportResponse):**
+- reportDetails: "Fraud Report 2026-05-07: 3 flagged transactions, 2 blocked cards, 1 investigation opened"
+
+---
+
+## 10. NotificationService Endpoints
+
+### SendTransactionAlert (RPC)
+**Request (TransactionAlertRequest):**
+- accountId: "ACC-2026-001"
+- transactionDetails: "Withdrawal of $500 from ATM-001 at 2026-05-07 14:30"
+
+**Response (NotificationResponse):**
+- status: "ALERT_SENT"
+
+### SendLowBalanceAlert (RPC)
+**Request (NotificationAccountIdRequest):**
+- accountId: "ACC-2026-004"
+
+**Response (NotificationResponse):**
+- status: "ALERT_SENT"
+
+### SendFraudAlert (RPC)
+**Request (FraudAlertRequest):**
+- accountId: "ACC-2026-003"
+- fraudDetails: "Suspicious withdrawal pattern detected"
+
+**Response (NotificationResponse):**
+- status: "ALERT_SENT"
+
+### GetNotifications (RPC)
+**Request (NotificationAccountIdRequest):**
+- accountId: "ACC-2026-001"
+
+**Response (NotificationListResponse):**
+- notifications: "1. [2026-05-07 14:30] Withdrawal alert: $500 from ATM-001\n2. [2026-05-06 09:15] Low balance alert: $200 remaining\n3. [2026-05-05 16:45] Deposit confirmed: $1000"
+
+---
+
+## 11. AuthService Endpoints
+
+### Login (RPC)
+**Request (LoginRequest):**
+- username: "alice.j@cashtrack.com"
+- password: "SecurePass123!"
+
+**Response (AuthResponse):**
+- token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGljZS5qQGNhc2h0cmFjay5jb20ifQ.bbbbb"
+- status: "LOGIN_SUCCESS"
+
+### ValidateToken (RPC)
+**Request (TokenRequest):**
+- token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGljZS5qQGNhc2h0cmFjay5jb20ifQ.bbbbb"
+
+**Response (AuthResponse):**
+- token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGljZS5qQGNhc2h0cmFjay5jb20ifQ.bbbbb"
+- status: "TOKEN_VALID"
+
+### RefreshToken (RPC)
+**Request (TokenRequest):**
+- token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGljZS5qQGNhc2h0cmFjay5jb20ifQ.bbbbb"
+
+**Response (AuthResponse):**
+- token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGljZS5qQGNhc2h0cmFjay5jb20ifQ.ccccc"
+- status: "TOKEN_REFRESHED"
+
+### Logout (RPC)
+**Request (TokenRequest):**
+- token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGljZS5qQGNhc2h0cmFjay5jb20ifQ.ccccc"
+
+**Response (AuthResponse):**
+- token: ""
+- status: "LOGOUT_SUCCESS"
+
+---
+
+## 12. AnalyticsService Endpoints
+
+### GetTransactionAnalytics (RPC)
+**Request (AnalyticsRequest):**
+- dateRange: "2026-05-01 to 2026-05-07"
+
+**Response (AnalyticsResponse):**
+- data: "Transaction Analytics: Total transactions 120, Volume $450,000, Avg transaction $3750, Peak hour 14:00-15:00"
+
+### GetATMUsageStats (RPC)
+**Request (AnalyticsATMIdRequest):**
+- atmId: "ATM-001"
+
+**Response (AnalyticsResponse):**
+- data: "ATM-001 Usage: 450 transactions, $1.2M volume, 99.2% uptime, Avg transaction time 45 seconds"
+
+### GetRevenueReport (RPC)
+**Request (RevenueRequest):**
+- dateRange: "2026-05-01 to 2026-05-07"
+
+**Response (AnalyticsResponse):**
+- data: "Revenue Report: $12,500 in fees, $8,200 in interchange, Total $20,700"
+
+### GetCustomerInsights (RPC)
+**Request (AnalyticsAccountIdRequest):**
+- accountId: "ACC-2026-001"
+
+**Response (AnalyticsResponse):**
+- data: "Customer Insights: 12 transactions, Avg deposit $650, Avg withdrawal $350, Preferred ATM ATM-001"
+
+---
+
+## 13. ForecastService Endpoints
+
+### ForecastCashDemand (RPC)
+**Request (ForecastRequest):**
+- atmId: "ATM-001"
+
+**Response (ForecastResponse):**
+- forecastData: "Cash Demand Forecast ATM-001: Next 7 days: 12,000, 13,500, 14,000, 11,000, 15,000, 18,000, 20,000"
+
+### RecommendCashLoading (RPC)
+**Request (RecommendCashRequest):**
+- atmId: "ATM-001"
+
+**Response (ForecastResponse):**
+- forecastData: "Recommended loading: Load $25,000 on 2026-05-08 to cover forecasted demand"
+
+### OptimizeATMDistribution (RPC)
+**Request (OptimizeDistributionRequest):**
+- region: "New York Downtown"
+
+**Response (ForecastResponse):**
+- forecastData: "Optimization: Relocate ATM-005 to 456 Broadway, Add ATM-010 at 789 5th Ave for better coverage"

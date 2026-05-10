@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: cashtrack
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/cashtrack?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+grpc:
+  server:
+    port: 9090
+  client:
+    accountService:
+      address: static://localhost:9090
+      negotiationType: plaintext
+    notificationService:
+      address: static://localhost:9090
+      negotiationType: plaintext
+    machineService:
+      address: static://localhost:9090
+      negotiationType: plaintext
+    analyticsService:
+      address: static://localhost:9090
+      negotiationType: plaintext
+
+server:
+  port: 8080

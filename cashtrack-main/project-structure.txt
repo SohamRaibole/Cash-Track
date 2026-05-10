@@ -1,0 +1,13 @@
+atm-account-module \
+ atm-session-module \
+  atm-withdrawal-module \
+  atm-deposit-module \
+  atm-transfer-module \
+  atm-balance-module \
+  atm-machine-module \
+  atm-reconciliation-module \
+  atm-fraud-module \
+  atm-notification-module \
+  atm-auth-module \
+  atm-analytics-module \
+  atm-forecast-module
