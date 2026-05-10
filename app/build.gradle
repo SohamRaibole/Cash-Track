@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+bootJar {
+    enabled = true
+}
+
+dependencies {
+    implementation project(':cashtrack-api-module')
+    implementation project(':cashtrack-account-module')
+    implementation project(':cashtrack-session-module')
+    implementation project(':cashtrack-withdrawl-module')
+    implementation project(':cashtrack-deposit-module')
+    implementation project(':cashtrack-transfer-module')
+}
